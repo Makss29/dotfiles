@@ -37,5 +37,19 @@ foreach ($target in $links.Keys) {
     Write-Host "Linked: $linkPath"
 }
 
+# Install skills — copy each skill folder to ~/.copilot/skills/
+$skillsSrc = "$dotfiles\copilot\skills"
+$skillsDst = "$copilotDir\skills"
+
+if (Test-Path $skillsSrc) {
+    New-Item -ItemType Directory -Path $skillsDst -Force | Out-Null
+    foreach ($skill in Get-ChildItem $skillsSrc -Directory) {
+        $target = "$skillsDst\$($skill.Name)"
+        if (Test-Path $target) { Remove-Item $target -Recurse -Force }
+        Copy-Item $skill.FullName $target -Recurse
+        Write-Host "Skill installed: $($skill.Name)"
+    }
+}
+
 Write-Host "`nDone! Restart Copilot CLI."
 Read-Host "Press Enter to close"
