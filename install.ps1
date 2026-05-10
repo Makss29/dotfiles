@@ -1,13 +1,17 @@
-# install.ps1 — создаёт симлинки для настроек Copilot CLI
-# Запускать от имени администратора (нужно для создания симлинков на Windows)
+# install.ps1 - Create symlinks for Copilot CLI settings
+# Auto-elevates to Administrator if needed
+
+if (-not ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
+    Start-Process powershell "-ExecutionPolicy Bypass -File `"$PSCommandPath`"" -Verb RunAs
+    exit
+}
 
 $dotfiles = $PSScriptRoot
 $copilotDir = "$HOME\.copilot"
 
-# Создать папку .copilot если не существует
 if (-not (Test-Path $copilotDir)) {
     New-Item -ItemType Directory -Path $copilotDir | Out-Null
-    Write-Host "Создана папка: $copilotDir"
+    Write-Host "Created: $copilotDir"
 }
 
 $links = @{
@@ -21,17 +25,17 @@ foreach ($target in $links.Keys) {
     $sourcePath = "$dotfiles\$($links[$target])"
 
     if (-not (Test-Path $sourcePath)) {
-        Write-Host "Пропущен (файл не найден): $($links[$target])"
+        Write-Host "Skipped (not found): $($links[$target])"
         continue
     }
 
-    # Удалить существующий файл/симлинк
     if (Test-Path $linkPath) {
         Remove-Item $linkPath -Force
     }
 
     New-Item -ItemType SymbolicLink -Path $linkPath -Target $sourcePath | Out-Null
-    Write-Host "Симлинк создан: $linkPath -> $sourcePath"
+    Write-Host "Linked: $linkPath"
 }
 
-Write-Host "`nГотово! Перезапусти Copilot CLI."
+Write-Host "`nDone! Restart Copilot CLI."
+Read-Host "Press Enter to close"
