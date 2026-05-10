@@ -1,0 +1,92 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body { background: #0d1117; color: #c9d1d9; font-family: "Segoe UI", monospace; }
+
+.dashboard {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 0;
+  border-bottom: 1px solid #30363d;
+  margin-bottom: 24px;
+
+  h1 { font-size: 20px; color: #f0f6fc; flex: 1; }
+  .ts { font-size: 12px; color: #8b949e; }
+
+  .status {
+    font-size: 13px;
+    padding: 4px 10px;
+    border-radius: 12px;
+  }
+  .status.online  { color: #3fb950; background: #0d2a17; }
+  .status.offline { color: #f85149; background: #2d1117; }
+}
+
+h2 { font-size: 14px; color: #8b949e; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
+
+.empty { color: #484f58; font-style: italic; padding: 20px; text-align: center; }
+
+.session {
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 12px;
+}
+.session.active { border-color: #388bfd; }
+
+.session-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.session-header code { font-size: 12px; color: #8b949e; }
+
+.badge { font-size: 11px; padding: 2px 8px; border-radius: 10px; background: #21262d; color: #8b949e; }
+.badge.active { background: #0d2a17; color: #3fb950; }
+
+.last-event { font-size: 13px; color: #8b949e; margin-bottom: 10px; }
+.last-event strong { color: #c9d1d9; }
+
+.events { display: flex; flex-direction: column; gap: 4px; }
+
+.event {
+  display: flex;
+  gap: 8px;
+  font-size: 12px;
+  padding: 4px 8px;
+  background: #0d1117;
+  border-radius: 4px;
+}
+.event-type { color: #388bfd; min-width: 80px; font-weight: 600; }
+.event-content { color: #8b949e; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.logs { margin-top: 24px; }
+
+.log-container {
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 8px;
+  padding: 12px;
+  max-height: 300px;
+  overflow-y: auto;
+  font-family: monospace;
+  font-size: 11px;
+}
+
+.log-line {
+  color: #8b949e;
+  padding: 1px 0;
+  border-bottom: 1px solid #21262d;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.log-line:last-child { border-bottom: none; }

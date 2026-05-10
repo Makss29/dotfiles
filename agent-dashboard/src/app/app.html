@@ -1,0 +1,46 @@
+<div class="dashboard">
+  <header>
+    <h1>🤖 Copilot Agent Dashboard</h1>
+    <div class="status" [class.online]="connected()" [class.offline]="!connected()">
+      {{ connected() ? '● Live' : '○ Connecting...' }}
+    </div>
+    <span class="ts">{{ timestamp() | date:'HH:mm:ss' }}</span>
+  </header>
+
+  <section class="sessions">
+    <h2>Sessions</h2>
+    @if (sessions().length === 0) {
+      <div class="empty">No active sessions</div>
+    }
+    @for (session of sessions(); track session.sessionId) {
+      <div class="session" [class.active]="session.isActive">
+        <div class="session-header">
+          <span class="badge" [class.active]="session.isActive">
+            {{ session.isActive ? '▶ Active' : '■ Idle' }}
+          </span>
+          <code>{{ shortId(session.sessionId) }}</code>
+        </div>
+        <div class="last-event">
+          <strong>Last event:</strong> {{ lastEvent(session) }}
+        </div>
+        <div class="events">
+          @for (ev of session.events.slice(-5); track $index) {
+            <div class="event">
+              <span class="event-type">{{ ev['type'] || 'event' }}</span>
+              <span class="event-content">{{ ev['content'] || '' }}</span>
+            </div>
+          }
+        </div>
+      </div>
+    }
+  </section>
+
+  <section class="logs">
+    <h2>Logs</h2>
+    <div class="log-container">
+      @for (line of logs().slice(-30); track $index) {
+        <div class="log-line">{{ line }}</div>
+      }
+    </div>
+  </section>
+</div>
